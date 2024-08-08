@@ -7,6 +7,8 @@ import { generalError } from "../middlewares/generalError.js";
 const app = express();
 app.disable("x-powered-by");
 
+app.post("/shorten-url");
+
 app.use(morgan("dev"));
 app.use(express.json());
 
