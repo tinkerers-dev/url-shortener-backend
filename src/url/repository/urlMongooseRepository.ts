@@ -1,9 +1,8 @@
 import { type Model } from "mongoose";
 import { type ShortenedUrlStructure } from "../types";
 import CRC32 from "crc-32";
-import { ShortenedUrl } from "../model/ShortenedUrl";
 
-class UrlMongooseRepository {
+export class UrlMongooseRepository {
   constructor(public readonly model: Model<ShortenedUrlStructure>) {}
 
   async shortenUrl(originalUrl: string): Promise<ShortenedUrlStructure> {
@@ -12,8 +11,6 @@ class UrlMongooseRepository {
     return this.model.create(shortenedUrl);
   }
 }
-
-export const urlRepository = new UrlMongooseRepository(ShortenedUrl);
 
 class ShortenUrl {
   public key: string;
