@@ -18,7 +18,7 @@ export class UrlController {
       .exec();
 
     if (url) {
-      res.status(200).json({ data: url });
+      res.status(409).json({ data: url });
       return;
     }
 

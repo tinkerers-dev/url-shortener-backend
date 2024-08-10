@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { type Model } from "mongoose";
 import { type ShortenedUrlStructure } from "../types";
 import CRC32 from "crc-32";
@@ -12,7 +13,7 @@ export class UrlMongooseRepository {
   }
 }
 
-class ShortenUrl {
+export class ShortenUrl {
   public key: string;
   public shortUrl: string;
 
@@ -22,4 +23,4 @@ class ShortenUrl {
   }
 }
 
-const generateKey = (url: string): string => String(CRC32.str(url));
+export const generateKey = (url: string): string => String(CRC32.str(url));
