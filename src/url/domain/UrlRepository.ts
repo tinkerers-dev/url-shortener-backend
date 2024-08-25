@@ -1,7 +1,8 @@
-import {Url} from "./Url";
+import {type Url} from "./Url";
+import {ShortenedUrl} from "./ShortenedUrl";
 
 export interface UrlRepository {
-  shortenUrl(originalUrl: string): Promise<Url>;
+  save(originalUrl: ShortenedUrl): Promise<Url>;
 
-  findUrlByOriginalUrl(originalUrl: string): Promise<Url | undefined>;
+  findUrlByOriginalUrl(originalUrl: string): Promise<Url>;
 }
