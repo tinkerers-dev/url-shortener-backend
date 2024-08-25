@@ -27,7 +27,7 @@ export class UrlController {
 
       res.status(200).json({ data: shortenedUrl });
     } catch (error) {
-      next(new ServerError((error as Error).message, 409));
+      next(new ServerError((error as Error).message, 500));
     }
   };
 }
