@@ -14,7 +14,7 @@ export class MongooseUrlRepository implements UrlRepository {
     await this.model.create(shortenedUrl);
   }
 
-  async findUrlByOriginalUrl(originalUrl: string): Promise<ShortenedUrl> {
+  async findUrlByKey(originalUrl: string): Promise<ShortenedUrl> {
     const urlData = await this.model
       .findOne({
         originalUrl,

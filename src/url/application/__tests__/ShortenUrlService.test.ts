@@ -2,25 +2,34 @@ import {ShortenUrlService} from "../ShortenUrlService";
 import {type KeyGenerator} from "../../domain/KeyGenerator";
 import {type UrlRepository} from "../../domain/UrlRepository";
 import {ShortenedUrl} from "../../domain/ShortenedUrl";
-import {UnableToShortenUrlError} from "./UnableToShortenUrlError";
+import {UnableToShortenUrlError} from "../../domain/errors/UnableToShortenUrlError";
+import {NullShortenedUrl} from "../../domain/NullShortenedUrl";
+import {afterEach} from "@jest/globals";
 
 describe("ShortenUrlService", () => {
-  it("should generate a key from the received url", async () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  })
+  
+  it("should check if the shortened url already exists", async () => {
     const url = "https://www.google.com";
+    const key = "abc123";
     const keyGenerator: KeyGenerator = {
-      generateKeyFromHashOf: jest.fn()
+      generateKeyFromHashOf: jest.fn().mockReturnValue(key)
     }
+    const expectedShortenedUrl = new ShortenedUrl({key, originalUrl: url});
     const urlRepository: UrlRepository = {
-      findUrlByOriginalUrl: jest.fn(),
+      findUrlByKey: jest.fn().mockReturnValue(expectedShortenedUrl),
       save: jest.fn(),
     }
 
     const shortenUrlService = new ShortenUrlService(keyGenerator, urlRepository);
 
-    await shortenUrlService.shortenUrl(url);
+    const shortenedUrl = await shortenUrlService.shortenUrl(url);
 
-    expect(keyGenerator.generateKeyFromHashOf).toHaveBeenCalledWith(url);
-  })
+    expect(shortenedUrl).toEqual(expectedShortenedUrl);
+
+  });
 
   it("should save the shortened url in the repository", async () => {
     const url = "https://www.google.com";
@@ -29,7 +38,7 @@ describe("ShortenUrlService", () => {
       generateKeyFromHashOf: jest.fn().mockReturnValue(key)
     }
     const urlRepository: UrlRepository = {
-      findUrlByOriginalUrl: jest.fn(),
+      findUrlByKey: jest.fn().mockReturnValue(new NullShortenedUrl()),
       save: jest.fn(),
     }
     const expectedShortenedUrl = new ShortenedUrl({key, originalUrl: url});
@@ -49,7 +58,7 @@ describe("ShortenUrlService", () => {
     }
     const repositoryError = new Error();
     const urlRepository: UrlRepository = {
-      findUrlByOriginalUrl: jest.fn(),
+      findUrlByKey: jest.fn(),
       save: jest.fn().mockRejectedValue(repositoryError),
     }
 

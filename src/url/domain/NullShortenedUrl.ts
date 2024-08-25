@@ -2,6 +2,6 @@ import {ShortenedUrl} from "./ShortenedUrl";
 
 export class NullShortenedUrl extends ShortenedUrl {
   constructor() {
-    super(null!);
+    super({key: null!, originalUrl: null!});
   }
 }

@@ -1,7 +1,7 @@
 import {type UrlRepository} from "../domain/UrlRepository";
 import {type KeyGenerator} from "../domain/KeyGenerator";
 import {ShortenedUrl} from "../domain/ShortenedUrl";
-import {UnableToShortenUrlError} from "./__tests__/UnableToShortenUrlError";
+import {UnableToShortenUrlError} from "../domain/errors/UnableToShortenUrlError";
 import {UrlShortener} from "../domain/UrlShortener";
 
 export class ShortenUrlService implements UrlShortener {
@@ -11,12 +11,17 @@ export class ShortenUrlService implements UrlShortener {
   async shortenUrl(originalUrl: string): Promise<ShortenedUrl> {
     const key = this.keyGenerator.generateKeyFromHashOf(originalUrl);
 
-    const url = new ShortenedUrl({
-      key,
-      originalUrl
-    });
-
     try {
+      const existingUrl = await this.urlRepository.findUrlByKey(key);
+
+      if (existingUrl.getOriginalUrl() !== null) {
+        return existingUrl;
+      }
+
+      const url = new ShortenedUrl({
+        key,
+        originalUrl
+      });
       await this.urlRepository.save(url);
       return url;
     } catch (error) {
