@@ -1,15 +1,14 @@
-import {Url} from "./Url";
-
 type ShortenedUrlProps = {
   key: string,
   originalUrl: string,
 };
 
-export class ShortenedUrl extends Url {
+export class ShortenedUrl {
   private readonly key: string;
+  private readonly originalUrl: string;
 
-  constructor(props: ShortenedUrlProps) {
-    super(props.originalUrl);
-    this.key = props.key;
+  constructor({originalUrl, key}: ShortenedUrlProps) {
+    this.originalUrl = originalUrl
+    this.key = key;
   }
 }
