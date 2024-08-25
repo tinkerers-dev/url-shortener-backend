@@ -2,7 +2,7 @@ import {type Url} from "../domain/Url";
 import {type UrlRepository} from "../domain/UrlRepository";
 import {type KeyGenerator} from "../domain/KeyGenerator";
 import {ShortenedUrl} from "../domain/ShortenedUrl";
-import {NullUrl} from "../domain/NullUrl";
+import {UnableToShortenUrlError} from "./__tests__/UnableToShortenUrlError";
 
 export class ShortenUrlService {
   constructor(private readonly keyGenerator: KeyGenerator, private readonly urlRepository: UrlRepository) {
@@ -20,9 +20,7 @@ export class ShortenUrlService {
       await this.urlRepository.save(url);
       return url;
     } catch (error) {
-      
+      throw new UnableToShortenUrlError(error as Error);
     }
-    
-    return new NullUrl();
   }
 }
