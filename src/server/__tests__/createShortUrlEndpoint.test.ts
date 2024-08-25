@@ -6,10 +6,7 @@ import app from "../app/app";
 import { type ShortenedUrlStructure } from "../../url/types";
 import connectToDataBase from "../../database";
 import { ShortenedUrl } from "../../url/model/ShortenedUrl";
-import {
-  generateKey,
-  ShortenUrl,
-} from "../../url/repository/urlMongooseRepository";
+import { ShortenUrl } from "../../url/ShortenUrl";
 
 let mongoMemoryServer: MongoMemoryServer;
 let serverUri: string;

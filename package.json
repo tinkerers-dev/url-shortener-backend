@@ -9,7 +9,9 @@
     "build:dev": "tsc -W",
     "start": "node .",
     "start:dev": "node --watch .",
-    "test": "jest"
+    "test": "jest",
+    "test:dev": "jest --watchAll",
+    "test:coverage": "jest --coverage"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +23,7 @@
     "@types/jest": "^29.5.12",
     "@types/morgan": "^1.9.9",
     "@types/node": "^20.11.25",
+    "@types/semver": "^7.5.8",
     "@types/supertest": "^6.0.2",
     "@typescript-eslint/eslint-plugin": "^7.10.0",
     "@typescript-eslint/parser": "^7.10.0",
