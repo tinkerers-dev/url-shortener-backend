@@ -5,8 +5,9 @@ import request from "supertest";
 import app from "../app/app";
 import { type ShortenedUrlStructure } from "../../url/types";
 import connectToDataBase from "../../database";
-import { ShortenedUrl } from "../../url/model/ShortenedUrl";
-import { ShortenUrl } from "../../url/ShortenUrl";
+import { ShortenedUrlModel } from "../../url/infrastructure/persistence/model/ShortenedUrlModel";
+import { ShortenedUrl } from "../../url/domain/ShortenedUrl";
+import {HttpStatus} from "../../url/infrastructure/http/api/UrlController";
 
 let mongoMemoryServer: MongoMemoryServer;
 let serverUri: string;
@@ -19,7 +20,7 @@ beforeAll(async () => {
 });
 
 afterEach(async () => {
-  await ShortenedUrl.deleteMany();
+  await ShortenedUrlModel.deleteMany();
 });
 
 afterAll(async () => {
@@ -32,24 +33,15 @@ describe("Given a post /shorten-url endpoint", () => {
     const route = "/shorten-url";
 
     const url = "www.example.com/example";
-    const shortenedUrl = new ShortenUrl(url);
 
-    test("Then it should respond with a status 200 and the data: originalUrl: www.example.com/example ", async () => {
-      const response = await request(app).post(route).send({ url }).expect(200);
+    test("Then it should respond with a status 201 and the shortenedUrl", async () => {
+      const response = await request(app).post(route).send({ url }).expect(HttpStatus.CREATED);
 
-      const body = response.body as { data: ShortenedUrlStructure };
+      const body = response.body as ShortenedUrlStructure;
 
-      expect(body.data).toEqual(expect.objectContaining(shortenedUrl));
-    });
-
-    test("And it already exists Then it should respond with a status 409 and the data: originalUrl: www.example.com/example ", async () => {
-      await ShortenedUrl.create(shortenedUrl);
-
-      const response = await request(app).post(route).send({ url }).expect(409);
-
-      const body = response.body as { data: ShortenedUrlStructure };
-
-      expect(body.data).toEqual(expect.objectContaining(shortenedUrl));
+      expect(body).toHaveProperty("originalUrl", url);
+      expect(body).toHaveProperty("key");
+      expect(body).toHaveProperty("shortUrl");
     });
   });
 });

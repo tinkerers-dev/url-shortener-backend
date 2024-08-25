@@ -32,7 +32,7 @@ describe("UrlController", () => {
     const shortenUrlService: UrlShortener = {
       shortenUrl: jest.fn().mockResolvedValue(shortenedUrl)
     }
-    const expectedShortenedUrlJson = new ShortenedUrlResponse(shortenedUrl, configuration.deployUrl).toJSON();
+    const expectedShortenedUrlJson = new ShortenedUrlResponse(shortenedUrl, configuration.deployUrl).toObject();
     const urlController = new UrlController(shortenUrlService, configuration);
     
     await urlController.createShortenedUrl(req as RequestWithOriginalUrl, res as Response, jest.fn());

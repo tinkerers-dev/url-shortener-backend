@@ -27,7 +27,7 @@ export class UrlController {
       const origin = this.configuration.deployUrl;
       const shortenedUrlResponse = new ShortenedUrlResponse(shortenedUrl, origin);
 
-      res.status(HttpStatus.CREATED).json(shortenedUrlResponse.toJSON());
+      res.status(HttpStatus.CREATED).json(shortenedUrlResponse.toObject());
     } catch (error) {
       next(new ServerError((error as Error).message, 500));
     }
