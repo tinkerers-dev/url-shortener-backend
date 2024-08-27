@@ -1,4 +1,4 @@
-import {ShortenedUrl} from "./ShortenedUrl";
+import {ShortenedUrl} from "./ShortenedUrl.js";
 
 export class NullShortenedUrl extends ShortenedUrl {
   constructor() {

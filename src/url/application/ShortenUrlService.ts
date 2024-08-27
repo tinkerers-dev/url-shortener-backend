@@ -1,8 +1,8 @@
 import {type UrlRepository} from "../domain/UrlRepository";
 import {type KeyGenerator} from "../domain/KeyGenerator";
-import {ShortenedUrl} from "../domain/ShortenedUrl";
-import {UnableToShortenUrlError} from "../domain/errors/UnableToShortenUrlError";
-import {UrlShortener} from "../domain/UrlShortener";
+import {ShortenedUrl} from "../domain/ShortenedUrl.js";
+import {UnableToShortenUrlError} from "../domain/errors/UnableToShortenUrlError.js";
+import {type UrlShortener} from "../domain/UrlShortener.js";
 
 export class ShortenUrlService implements UrlShortener {
   constructor(private readonly keyGenerator: KeyGenerator, private readonly urlRepository: UrlRepository) {

@@ -2,8 +2,8 @@ import {type NextFunction, type Response} from "express";
 import {type RequestWithOriginalUrl} from "./types";
 import {type UrlShortener} from "../../../domain/UrlShortener";
 import {type Configuration} from "../../../../config/Configuration";
-import {ShortenedUrlResponse} from "./ShortenedUrlResponse";
-import ServerError from "../../../../server/middlewares/errors/ServerError/ServerError";
+import {ShortenedUrlResponse} from "./ShortenedUrlResponse.js";
+import ServerError from "../../../../shared/infrastructure/http/server/middlewares/errors/ServerError/ServerError.js";
 
 export enum HttpStatus {
   CREATED = 201,

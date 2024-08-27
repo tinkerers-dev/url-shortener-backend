@@ -1,6 +1,6 @@
 import { type NextFunction, type Request, type Response } from "express";
-import ServerError from "../errors/ServerError/ServerError.js";
-import notFoundError from "../notFoundError.js";
+import ServerError from "../errors/ServerError/ServerError";
+import {notFoundError} from "../notFoundError";
 
 describe("Given the notFoundError middleware", () => {
   describe("When it receives a next function", () => {

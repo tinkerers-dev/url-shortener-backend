@@ -5,7 +5,7 @@ import {type UrlShortener} from "../../../../domain/UrlShortener";
 import {ShortenedUrl} from "../../../../domain/ShortenedUrl";
 import {type Configuration} from "../../../../../config/Configuration";
 import {ShortenedUrlResponse} from "../ShortenedUrlResponse";
-import ServerError from "../../../../../server/middlewares/errors/ServerError/ServerError";
+import ServerError from "../../../../../shared/infrastructure/http/server/middlewares/errors/ServerError/ServerError";
 
 describe("UrlController", () => {
   const originalUrl = "https://www.google.com";
@@ -19,7 +19,9 @@ describe("UrlController", () => {
     json: jest.fn()
   }
   const configuration: Configuration = {
-    deployUrl: "http://localhost:3000"
+    deployUrl: "http://localhost:3000",
+    port: 3000,
+    mongoDbUri: "",
   }
 
   afterEach(() => {

@@ -3,11 +3,11 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import request from "supertest";
 import app from "../app/app";
-import { type ShortenedUrlStructure } from "../../url/types";
-import connectToDataBase from "../../database";
-import { ShortenedUrlModel } from "../../url/infrastructure/persistence/model/ShortenedUrlModel";
-import { ShortenedUrl } from "../../url/domain/ShortenedUrl";
-import {HttpStatus} from "../../url/infrastructure/http/api/UrlController";
+import { type ShortenedUrlStructure } from "../../../../../url/types";
+import connectToDataBase from "../../../database";
+import { ShortenedUrlModel } from "../../../../../url/infrastructure/persistence/model/ShortenedUrlModel";
+import { ShortenedUrl } from "../../../../../url/domain/ShortenedUrl";
+import {HttpStatus} from "../../../../../url/infrastructure/http/api/UrlController";
 
 let mongoMemoryServer: MongoMemoryServer;
 let serverUri: string;

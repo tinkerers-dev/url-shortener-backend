@@ -1,4 +1,4 @@
-import connectToDataBase from ".";
+import connectToDataBase from "./index";
 
 describe("Given a connectToDataBase function", () => {
   describe("When it receives an invalid url", () => {

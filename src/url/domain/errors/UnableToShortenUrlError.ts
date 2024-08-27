@@ -1,4 +1,4 @@
-import {DomainError} from "../../../shared/domain/DomainError";
+import {DomainError} from "../../../shared/domain/DomainError.js";
 
 export class UnableToShortenUrlError extends DomainError {
   constructor(public readonly cause: Error) {

@@ -1,11 +1,9 @@
 import "dotenv/config";
-import startServer from "./server/index.js";
-import connectToDataBase from "./database/index.js";
+import startServer from "./shared/infrastructure/http/server/index.js";
+import connectToDataBase from "./shared/infrastructure/database/index.js";
+import {configuration} from "./config/index.js";
 
-const dataBaseUri = process.env.MONGODB_URI!;
 
-await connectToDataBase(dataBaseUri);
+await connectToDataBase(configuration.mongoDbUri);
 
-const port = process.env.PORT ?? 4444;
-
-startServer(Number(port));
+startServer(configuration.port);

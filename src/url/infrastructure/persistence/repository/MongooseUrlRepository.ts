@@ -1,9 +1,9 @@
 import "dotenv/config";
 import {type Model} from "mongoose";
 import {type ShortenedUrlStructure} from "../../../types";
-import {ShortenedUrl} from "../../../domain/ShortenedUrl";
+import {ShortenedUrl} from "../../../domain/ShortenedUrl.js";
 import {type UrlRepository} from "../../../domain/UrlRepository";
-import {NullShortenedUrl} from "../../../domain/NullShortenedUrl";
+import {NullShortenedUrl} from "../../../domain/NullShortenedUrl.js";
 
 
 export class MongooseUrlRepository implements UrlRepository {
