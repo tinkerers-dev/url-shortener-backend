@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "../app/app.js";
+import app from "../app/app";
 
 describe("Given a non existing endpoint", () => {
   describe("When it receives a Request,", () => {

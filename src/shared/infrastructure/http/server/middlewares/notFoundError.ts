@@ -1,7 +1,7 @@
-import { type NextFunction, type Request, type Response } from "express";
+import {type NextFunction, type Request, type Response} from "express";
 import ServerError from "./errors/ServerError/ServerError.js";
 
-const notFoundError = (
+export const notFoundError = (
   _req: Request,
   _res: Response,
   next: NextFunction,
@@ -11,4 +11,3 @@ const notFoundError = (
   next(error);
 };
 
-export default notFoundError;

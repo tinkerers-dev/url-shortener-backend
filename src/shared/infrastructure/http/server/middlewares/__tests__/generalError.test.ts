@@ -1,6 +1,6 @@
 import { type NextFunction, type Request, type Response } from "express";
-import { generalError } from "../generalError.js";
-import ServerError from "../errors/ServerError/ServerError.js";
+import { generalError } from "../generalError";
+import ServerError from "../errors/ServerError/ServerError";
 import { type ResponseWithStatusJson } from "../types";
 
 describe("Given the generalError middleware", () => {
