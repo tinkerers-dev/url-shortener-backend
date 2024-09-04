@@ -28,4 +28,8 @@ export class ShortenUrlService implements UrlShortener {
       throw new UnableToShortenUrlError(error as Error);
     }
   }
+
+  async findUrlByKey(key: string): Promise<ShortenedUrl> {
+    return this.urlRepository.findUrlByKey(key);
+  }
 }
