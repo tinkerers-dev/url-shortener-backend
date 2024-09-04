@@ -1,11 +1,12 @@
-import {HttpStatus, UrlController} from "../UrlController";
+import {UrlController} from "../UrlController";
 import {type RequestWithOriginalUrl} from "../types";
-import {type Response} from "express";
+import {type Request, type Response} from "express";
 import {type UrlShortener} from "../../../../domain/UrlShortener";
 import {ShortenedUrl} from "../../../../domain/ShortenedUrl";
 import {type Configuration} from "../../../../../config/Configuration";
 import {ShortenedUrlResponse} from "../ShortenedUrlResponse";
 import ServerError from "../../../../../shared/infrastructure/http/server/middlewares/errors/ServerError/ServerError";
+import {HttpStatus} from "../../../../../shared/infrastructure/http/HttpStatus";
 
 describe("UrlController", () => {
   const originalUrl = "https://www.google.com";
@@ -16,7 +17,8 @@ describe("UrlController", () => {
   }
   const res: Partial<Response> = {
     status: jest.fn().mockReturnThis(),
-    json: jest.fn()
+    json: jest.fn(),
+    redirect: jest.fn(),
   }
   const configuration: Configuration = {
     deployUrl: "http://localhost:3000",
@@ -32,11 +34,12 @@ describe("UrlController", () => {
     const key = "abc123";
     const shortenedUrl = new ShortenedUrl({key, originalUrl});
     const shortenUrlService: UrlShortener = {
-      shortenUrl: jest.fn().mockResolvedValue(shortenedUrl)
+      shortenUrl: jest.fn().mockResolvedValue(shortenedUrl),
+      findUrlByKey: jest.fn(),
     }
     const expectedShortenedUrlJson = new ShortenedUrlResponse(shortenedUrl, configuration.deployUrl).toObject();
     const urlController = new UrlController(shortenUrlService, configuration);
-    
+
     await urlController.createShortenedUrl(req as RequestWithOriginalUrl, res as Response, jest.fn());
 
     expect(res.status).toHaveBeenCalledWith(HttpStatus.CREATED);
@@ -45,7 +48,8 @@ describe("UrlController", () => {
 
   it("should invoke next function with error if unable to create the shortened url", async () => {
     const shortenUrlService: UrlShortener = {
-      shortenUrl: jest.fn().mockRejectedValue(new Error())
+      shortenUrl: jest.fn().mockRejectedValue(new Error()),
+      findUrlByKey: jest.fn(),
     }
     const next = jest.fn();
     const urlController = new UrlController(shortenUrlService, configuration);
@@ -54,4 +58,24 @@ describe("UrlController", () => {
 
     expect(next).toHaveBeenCalledWith(expect.any(ServerError));
   });
+
+  it("should redirect to the original url found with the key and respond with status 307", async () => {
+    const key = "abc123";
+    const shortenUrlService: UrlShortener = {
+      shortenUrl: jest.fn(),
+      findUrlByKey: jest.fn().mockResolvedValue(new ShortenedUrl({key, originalUrl})),
+    }
+    const next = jest.fn();
+    const req: Partial<Request> = {
+      params: {
+        key
+      }
+    }
+    const urlController = new UrlController(shortenUrlService, configuration);
+
+    await urlController.redirectToOriginalUrl(req as Request, res as Response, next);
+
+    expect(res.status).toHaveBeenCalledWith(HttpStatus.TEMPORARY_REDIRECT);
+    expect(res.redirect).toHaveBeenCalledWith(originalUrl);
+  })
 })
