@@ -33,7 +33,9 @@ describe("Given a guest user has created a shortened URL", () => {
 
   describe("When the user visits the shortened URL", () => {
     it("Then the user should be redirected to the original URL", async () => {
-      await request(app).get(`/${shortenedUrl.getKey()}`).expect(HttpStatus.TEMPORARY_REDIRECT).expect("Location", shortenedUrl.getOriginalUrl());
+      const response = await request(app).get(`/${shortenedUrl.getKey()}`).expect(HttpStatus.FOUND);
+      
+      expect(response.header.location).toBe(shortenedUrl.getOriginalUrl());
     })
   })
 })

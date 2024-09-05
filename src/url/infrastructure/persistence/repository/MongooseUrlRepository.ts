@@ -7,29 +7,31 @@ import {NullShortenedUrl} from "../../../domain/NullShortenedUrl.js";
 
 
 export class MongooseUrlRepository implements UrlRepository {
-  constructor(public readonly model: Model<ShortenedUrlStructure>) {
-  }
-
-  async save(shortenedUrl: ShortenedUrl): Promise<void> {
-    await this.model.create(shortenedUrl);
-  }
-
-  async findUrlByKey(originalUrl: string): Promise<ShortenedUrl> {
-    const urlData = await this.model
-      .findOne({
-        originalUrl,
-      })
-      .exec();
-
-    if (!urlData) {
-      return new NullShortenedUrl();
+    constructor(public readonly model: Model<ShortenedUrlStructure>) {
     }
 
-    return new ShortenedUrl(
-      {
-        originalUrl: urlData.originalUrl,
-        key: urlData.key,
-      }
-    );
-  }
+    async save(shortenedUrl: ShortenedUrl): Promise<void> {
+        await this.model.create(shortenedUrl);
+    }
+
+    async findUrlByKey(key: string): Promise<ShortenedUrl> {
+        const urlData = await this.model
+            .findOne({
+                key: {
+                    $eq: key
+                }
+            })
+            .exec();
+
+        if (!urlData) {
+            return new NullShortenedUrl();
+        }
+
+        return new ShortenedUrl(
+            {
+                originalUrl: urlData.originalUrl,
+                key: urlData.key,
+            }
+        );
+    }
 }

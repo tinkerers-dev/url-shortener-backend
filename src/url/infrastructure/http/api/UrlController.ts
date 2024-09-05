@@ -34,6 +34,10 @@ export class UrlController {
   async redirectToOriginalUrl(req: Request, res: Response, next: NextFunction): Promise<void> {
     const shortenedUrl = await this.shortenUrlService.findUrlByKey(req.params.key);
     
-    res.status(HttpStatus.TEMPORARY_REDIRECT).redirect(shortenedUrl.getOriginalUrl())
+    if (shortenedUrl.getOriginalUrl() === null) {
+        return next();
+    }
+    
+    res.redirect(shortenedUrl.getOriginalUrl())
   }
 }

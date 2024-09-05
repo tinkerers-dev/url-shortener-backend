@@ -1,5 +1,24 @@
 import request from "supertest";
 import app from "../app/app";
+import {MongoMemoryServer} from "mongodb-memory-server";
+import connectToDataBase from "../../../database";
+import mongoose from "mongoose";
+
+let mongoMemoryServer: MongoMemoryServer;
+let serverUri: string;
+
+beforeAll(async () => {
+  mongoMemoryServer = await MongoMemoryServer.create();
+  serverUri = mongoMemoryServer.getUri();
+
+  await connectToDataBase(serverUri);
+});
+
+afterAll(async () => {
+  await mongoose.disconnect()
+  await mongoMemoryServer.stop();
+});
+
 
 describe("Given a non existing endpoint", () => {
   describe("When it receives a Request,", () => {
