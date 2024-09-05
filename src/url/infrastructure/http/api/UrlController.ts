@@ -1,23 +1,20 @@
-import {type NextFunction, type Response} from "express";
+import {type NextFunction, type Request, type Response} from "express";
 import {type RequestWithOriginalUrl} from "./types";
 import {type UrlShortener} from "../../../domain/UrlShortener";
 import {type Configuration} from "../../../../config/Configuration";
 import {ShortenedUrlResponse} from "./ShortenedUrlResponse.js";
 import ServerError from "../../../../shared/infrastructure/http/server/middlewares/errors/ServerError/ServerError.js";
-
-export enum HttpStatus {
-  CREATED = 201,
-}
+import {HttpStatus} from "../../../../shared/infrastructure/http/HttpStatus";
 
 export class UrlController {
   constructor(private readonly shortenUrlService: UrlShortener, private readonly configuration: Configuration) {
   }
 
-  createShortenedUrl = async (
+  async createShortenedUrl(
     req: RequestWithOriginalUrl,
     res: Response,
     next: NextFunction,
-  ): Promise<void> => {
+  ): Promise<void> {
     const originalUrl = req.body.url;
 
     try {
@@ -34,4 +31,13 @@ export class UrlController {
   };
 
 
+  async redirectToOriginalUrl(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const shortenedUrl = await this.shortenUrlService.findUrlByKey(req.params.key);
+    
+    if (shortenedUrl.getOriginalUrl() === null) {
+        return next();
+    }
+    
+    res.redirect(shortenedUrl.getOriginalUrl())
+  }
 }

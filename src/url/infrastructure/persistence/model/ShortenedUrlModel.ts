@@ -5,11 +5,11 @@ const shortenedUrlSchema = new Schema<ShortenedUrlStructure>({
   key: {
     type: String,
     unique: true,
+    index: true,
     required: true,
   },
   originalUrl: {
     type: String,
-    unique: true,
     required: true,
   },
 });

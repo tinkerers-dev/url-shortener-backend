@@ -66,5 +66,22 @@ describe("ShortenUrlService", () => {
 
     void expect(async () => shortenUrlService.shortenUrl(url)).rejects.toThrow(UnableToShortenUrlError);
   })
+  
+  it("should find the url by the received key", async () => {
+    const key = "abc123";
+    const keyGenerator: KeyGenerator = {
+      generateKeyFromHashOf: jest.fn(),
+    }
+    const urlRepository: UrlRepository = {
+      findUrlByKey: jest.fn(),
+      save: jest.fn(),
+    }
+    
+    const shortenUrlService = new ShortenUrlService(keyGenerator, urlRepository);
+    
+    await shortenUrlService.findUrlByKey(key);
+    
+    expect(urlRepository.findUrlByKey).toHaveBeenCalledWith(key);
+  })
 })
 

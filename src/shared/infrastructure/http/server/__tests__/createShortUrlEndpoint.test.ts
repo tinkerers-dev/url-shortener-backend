@@ -7,7 +7,8 @@ import { type ShortenedUrlStructure } from "../../../../../url/types";
 import connectToDataBase from "../../../database";
 import { ShortenedUrlModel } from "../../../../../url/infrastructure/persistence/model/ShortenedUrlModel";
 import { ShortenedUrl } from "../../../../../url/domain/ShortenedUrl";
-import {HttpStatus} from "../../../../../url/infrastructure/http/api/UrlController";
+
+import {HttpStatus} from "../../HttpStatus";
 
 let mongoMemoryServer: MongoMemoryServer;
 let serverUri: string;

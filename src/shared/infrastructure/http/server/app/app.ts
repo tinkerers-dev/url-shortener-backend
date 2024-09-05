@@ -23,7 +23,8 @@ app.use(express.json());
 
 app.use(cors());
 
-app.post("/shorten-url", controller.createShortenedUrl);
+app.get("/:key", controller.redirectToOriginalUrl.bind(controller));
+app.post("/shorten-url", controller.createShortenedUrl.bind(controller));
 app.use(notFoundError);
 app.use(generalError);
 
