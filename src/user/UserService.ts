@@ -1,3 +1,8 @@
+export type UserCredentials = {
+  email: string;
+  password: string;
+};
+
 export interface UserService {
-  createUser(): unknown;
+  createUser(userCredentials: UserCredentials): unknown;
 }

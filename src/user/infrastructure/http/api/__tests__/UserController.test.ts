@@ -1,10 +1,22 @@
-import { type Response, type Request, type NextFunction } from "express";
+import { type Response, type NextFunction } from "express";
 import { UserController } from "../UserController.js";
-import { type UserService } from "../../../../UserService";
+import {
+  type UserCredentials,
+  type UserService,
+} from "../../../../UserService";
+import { type SignUpRequest } from "../SignUpRequest.js";
 
 describe("UserController", () => {
-  it("should call its service", () => {
-    const req: Partial<Request> = {};
+  it("should invoke CreateUser with userCredentials", () => {
+    const email = "example@email.com";
+    const password = "*1234Abc";
+
+    const userCredentials: UserCredentials = {
+      password,
+      email,
+    };
+
+    const req: Partial<SignUpRequest> = { body: { email, password } };
     const res: Partial<Response> = {};
     const next = jest.fn();
 
@@ -15,11 +27,11 @@ describe("UserController", () => {
     const userController = new UserController(userService);
 
     userController.signUp(
-      req as Request,
+      req as SignUpRequest,
       res as Response,
       next as NextFunction,
     );
 
-    expect(userService.createUser).toHaveBeenCalled();
+    expect(userService.createUser).toHaveBeenCalledWith(userCredentials);
   });
 });
