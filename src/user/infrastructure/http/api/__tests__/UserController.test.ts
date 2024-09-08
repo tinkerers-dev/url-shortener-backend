@@ -1,16 +1,6 @@
 import { type Response, type Request, type NextFunction } from "express";
-
-export class UserController {
-  constructor(private readonly userService: UserService) {}
-
-  signUp(req: Request, res: Response, next: NextFunction) {
-    this.userService.createUser();
-  }
-}
-
-export interface UserService {
-  createUser(): unknown;
-}
+import { UserController } from "../UserController.js";
+import { type UserService } from "../../../../UserService";
 
 describe("UserController", () => {
   it("should call its service", () => {
