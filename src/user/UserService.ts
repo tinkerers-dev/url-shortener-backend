@@ -4,5 +4,5 @@ export type UserCredentials = {
 };
 
 export interface UserService {
-  createUser(userCredentials: UserCredentials): unknown;
+  createUser(userCredentials: UserCredentials): Promise<void>;
 }

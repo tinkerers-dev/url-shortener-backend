@@ -1,15 +1,19 @@
 import type { NextFunction, Response } from "express";
 import { type UserCredentials, type UserService } from "../../../UserService";
 import { type SignUpRequest } from "./SignUpRequest";
+import { HttpStatus } from "../../../../shared/infrastructure/http/HttpStatus";
 
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  signUp(req: SignUpRequest, res: Response, next: NextFunction) {
+  async signUp(req: SignUpRequest, res: Response, _next: NextFunction) {
     const userCredentials: UserCredentials = {
       email: req.body.email,
       password: req.body.password,
     };
-    this.userService.createUser(userCredentials);
+
+    await this.userService.createUser(userCredentials);
+
+    res.status(HttpStatus.CREATED);
   }
 }
