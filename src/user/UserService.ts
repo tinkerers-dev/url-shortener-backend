@@ -1,8 +1,7 @@
-export type UserCredentials = {
-  email: string;
-  password: string;
-};
+import { type UserCreator, type UserCredentials } from "./UserCreator";
 
-export interface UserService {
-  createUser(userCredentials: UserCredentials): Promise<void>;
+export class UserService implements UserCreator {
+  async createUser(userCredentials: UserCredentials): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
 }

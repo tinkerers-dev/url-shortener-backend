@@ -1,6 +1,6 @@
 import { type Response, type NextFunction } from "express";
 import { UserController } from "../UserController.js";
-import { type UserService } from "../../../../UserService";
+import { type UserCreator } from "../../../../UserCreator.js";
 import { type SignUpRequest } from "../SignUpRequest.js";
 import { HttpStatus } from "../../../../../shared/infrastructure/http/HttpStatus.js";
 
@@ -15,7 +15,7 @@ describe("UserController", () => {
     };
     const next = jest.fn();
 
-    const userService: UserService = {
+    const userService: UserCreator = {
       createUser: jest.fn().mockResolvedValue(undefined),
     };
 
